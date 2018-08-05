@@ -8,11 +8,11 @@ I am relatively new at the whole MVC design concept, so this should be fun!
 
 **2018-07-26**
 
-Before I started this file, I was able to get a basic MySQL database file to compile called `db.cc`, which is defined in `db.h`.  The key here is that the file compiles.  
+Before I started this file, I was able to get a basic MySQL database file to compile called `db.cc`, which is defined in `db.h`.  The key here is that the file compiles.
 
 There are also some design decisions in this file that I may regret.  For example, there is only one connection object, which may be a problem if I have databases spread across multiple servers.  For now, my intent is to keep these all on the same database instance.  Another thing I may regret and change is the the connection information is all kept in global static variables.  Eventually, this will likely all be encapsuated into its own class.
 
-So, it is important to understand these 2 files become the basis for all models, at least from a data perspective.  These will be used to get, process, and store data to the persistent database. 
+So, it is important to understand these 2 files become the basis for all models, at least from a data perspective.  These will be used to get, process, and store data to the persistent database.
 
 The first model I need to start with will be the `cba_metadata.elements` table.  There will need to be functions to insert a new element, update an existing element, fetch an existing element, check for existence of an existing element, and get a list of elements matching the search criteria.
 
@@ -67,5 +67,36 @@ This morning, I finished up the initial population of the elements table with da
 
 So, now I need to figure out if I am going to track this with git and place it on github....  I believe that git tracking is a no-brainer.  It has to happen, and now is as good a time as any to get started.  As for githib, I am debating that one.  For the moment, this is just play to learn how to interoperate on C9, learn how to integrate with MySQL with C++, and learn how to develop a GUI application for Linux.  But then again, others may benefit from my progress here (which is partly why I keep this file!).  So, I guess github it is.
 
+---
 
+**2018-08-03**
+
+Well, I obviuosly have been busy for a few days.  I have been travelling for work and there were some issues that took quite a bit of my time and effort, and by the time I was back in the hotel room, I had no energy left.
+
+So, where did I leave off and what to do next...?
+
+That's right: I have been researching and working on getting a qt5 application working.
+
+This utility appears to have worked the best. I am able to get a vnc session started:  https://github.com/billyprice1/cloud9-vnc
+
+So, now I need to create a trivial GUI application for testing.
+
+---
+
+**2018-08-05**
+
+I have what I think is a working application written.  I have noVNC installed and working for the Cloud9 system.  Now all I have to do is to able to test it successfully and make sure I can run my applicaiton over noVNC.
+
+I had to do some additional work to ensure that things were working properly.  This is found on this post: https://community.c9.io/t/how-to-set-display-in-my-workspace/1646/22.
+
+I was finally able to get a basic application to run and view the results.  The code to accomplish this basic test is the following:
+
+```c++
+    QApplication app(argc, argv);
+    QPushButton button ("Hello world !");
+    button.show();
+    app.exec();
+```
+
+To complete this test, I was required to comment out the MySQL code, so they are not coexisting at the moment.  I need to resolve that as well.  This turned out to be just as simple as starting the MySQL server.
 
