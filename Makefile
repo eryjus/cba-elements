@@ -14,7 +14,7 @@
 ##
 ## -- Some defines to make the compilaton easier
 ##    ------------------------------------------
-FILES=db model-elements main logger
+FILES=db model-elements main logger view-mainwindow
 SRC=$(addsuffix .cc,$(addprefix src/,$(FILES)))
 OBJ=$(addsuffix .o,$(addprefix obj/,$(FILES)))
 INC=inc/*.h

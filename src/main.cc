@@ -21,7 +21,8 @@
 #include <stdexcept>
 
 #include <QApplication>
-#include <QPushButton>
+
+#include "view-mainwindow.h"
 
 //
 // -- The main entry point
@@ -39,11 +40,13 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
+    QApplication app(argc, argv);
+
+    MainWindow *mainWin = MainWindow::Factory();
+    mainWin->show();
+
+    int rv = app.exec();
     DisconnectDatabase();
 
-    QApplication app(argc, argv);
-    QPushButton button ("Hello world !");
-    button.show();
-    app.exec();
-    return EXIT_SUCCESS;
+    return rv;
 }

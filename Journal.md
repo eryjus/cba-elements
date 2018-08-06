@@ -100,3 +100,18 @@ I was finally able to get a basic application to run and view the results.  The 
 
 To complete this test, I was required to comment out the MySQL code, so they are not coexisting at the moment.  I need to resolve that as well.  This turned out to be just as simple as starting the MySQL server.
 
+---
+
+Having committed this code, I now need to lay out this applicaiton and build out the UI.  Since I am not familiar with Qt, this may take some time and some research.
+
+OK, so I have found the class reference on the web for Qt.  It is found here: http://doc.qt.io/archives/qt-4.8/classes.html.
+
+With this, I believe I have all I need to start constructing the application framework.  The key here for me is going to be keeping the view separated from the controller.
+
+I was able to get an application window and a menu set up.  The menu options do not do anything at the moment.
+
+I think this is a good point to commit the code again today.
+
+---
+
+
