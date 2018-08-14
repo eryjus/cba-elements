@@ -11,7 +11,7 @@
 //===================================================================================================================
 
 
-#include "model-elements.h"
+#include "elements.h"
 
 #define ENABLE_LOG
 #include "logger.h"
@@ -53,7 +53,7 @@ void ModelElements::ClearCurrentRecord(void)
 //
 // -- Check if the table exists
 //    -------------------------
-bool ModelElements::CheckTableExists(void) 
+bool ModelElements::CheckTableExists(void)
 {
     std::string sqlStmt = "                                                \
        SELECT *                                                            \
@@ -61,18 +61,18 @@ bool ModelElements::CheckTableExists(void)
        WHERE table_schema = '" + GetSchemaName() + "'                      \
           AND table_name = '" + GetTableName() + "'                        \
     ";
-    
+
     try {
         sql::Statement *stmt = connection->createStatement();
         sql::ResultSet *res = stmt->executeQuery(sqlStmt);
         bool rv = res->next();
-    
+
         delete res;
         delete stmt;
-    
+
         return rv;
     } catch (sql::SQLException &e) {
-        LOG_ERR("In Elements::CheckTableExists(): ", e.what(), " (Error Code: ", e.getErrorCode(), 
+        LOG_ERR("In Elements::CheckTableExists(): ", e.what(), " (Error Code: ", e.getErrorCode(),
                 "; State: ", e.getSQLState(), ")");
         return false;
     }
@@ -111,13 +111,13 @@ void ModelElements::CreateTable(void)
                 PRIMARY KEY (element_name)                                      \
             )                                                                   \
         ";
-    
+
         LOG(sqlStmt);
-    
+
         sql::Statement *stmt = connection->createStatement();
         stmt->execute(sqlStmt);
         delete stmt;
-    
+
         LoadTables();
     }
 }
@@ -155,16 +155,16 @@ bool ModelElements::InsertRecord(void)
     ";
 
     LOG(sqlStmt);
-    
+
     try {
         stmt = connection->createStatement();
         stmt->execute(sqlStmt);
     } catch (sql::SQLException &e) {
-        LOG_WARN("In Elements::InsertRecord(): ", e.what(), " (Error Code: ", e.getErrorCode(), 
+        LOG_WARN("In Elements::InsertRecord(): ", e.what(), " (Error Code: ", e.getErrorCode(),
                 "; State: ", e.getSQLState(), ")");
         rv = false;
     }
-    
+
     delete stmt;
     return rv;
 }

@@ -1,4 +1,10 @@
 bin
 obj
+.tup
+.c9
+.git
 
 debug.log
+Tupfile.obj
+
+src/*.moc

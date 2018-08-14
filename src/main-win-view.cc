@@ -1,6 +1,6 @@
 //===================================================================================================================
 //
-// view-mainwindow.cc -- This is the main window implementation
+// view/main-win-view.cc -- This is the main window implementation
 //
 // We use Qt4 for this implementation.
 //
@@ -13,24 +13,39 @@
 //===================================================================================================================
 
 
-#include "view-mainwindow.h"
+//
+// -- Enable logging from this file
+//    -----------------------------
+#define ENABLE_LOG
+
+
+//
+// -- Application includes; framework includes; and then std C++ includes
+//    -------------------------------------------------------------------
+#include "logger.h"
+#include "about-controller.h"
+#include "main-win-view.h"
+#include "main-win-controller.h"
+#include "about-view.h"
 
 #include <QDesktopWidget>
 #include <QMenuBar>
 #include <QMenu>
+#include <QStackedWidget>
 
 
 //
 // -- The Factory class needs will create a new instance
 //    --------------------------------------------------
-MainWindow *MainWindow::Factory(void)
+MainWindowView *MainWindowView::Factory(MainWindowController *ctl)
 {
     QDesktopWidget desktop;
-    MainWindow *rv = new MainWindow();
+    MainWindowView *rv = new MainWindowView();
 
     rv->move(0, 0);
     rv->setFixedSize((int)(desktop.width() * 0.85), (int)(desktop.height() * 0.85));
-    rv->CreateMenus();
+    rv->CreateMenus(ctl);
+    rv->setCentralWidget(new QStackedWidget());
 
     return rv;
 }
@@ -39,7 +54,7 @@ MainWindow *MainWindow::Factory(void)
 //
 // -- Create the menus for the applicaiton
 //    ------------------------------------
-void MainWindow::CreateMenus(void)
+void MainWindowView::CreateMenus(MainWindowController *ctl)
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(tr("&New"));
@@ -54,5 +69,6 @@ void MainWindow::CreateMenus(void)
     editMenu->addAction(tr("&Preferences"));
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
-    helpMenu->addAction(tr("&About"));
+    ctl->AboutAction() = new QAction(tr("&About"), this);
+    helpMenu->addAction(ctl->AboutAction());
 }

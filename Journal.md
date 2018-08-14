@@ -114,4 +114,86 @@ I think this is a good point to commit the code again today.
 
 ---
 
+So, I think the next thing to work on is the About dialog box.  It seems simple enough to incorporate as I learn and appropriate enough to do first.  To accomplish this, I will need to doctor up the menu option to work, create and display the dialog box, self-destroy the dialog box, and tie the menu option to the actual dialog to display.
+
+Finally, a quick observation: it appears that Qt and JavaFX are architected quite similarly.  Some thing might be able to translate 1:1 and Qt might be able to be a build target for CBA as well as JavaFX.
+
+---
+
+**2018-08-06**
+
+So, I am coding from a plane today.  To say things are tight is a bit of an understatement.
+
+I am going to work on developing the About dialog box and hooking that to the proper menu item.  Well, as much as I can anyway.
+
+OK, I'm have an about dialog painting and I am trying to understand how to tie the menu to the dialog.  I know tjis will need to be done with a QAction object or subclass, but I also am trying to figure out how to deal with signals and slots.  I am reviewing this site: http://doc.qt.io/archives/qt-4.8/signalsandslots.html.
+
+---
+
+**2018-08-08**
+
+I'm trying to figure out where I left off.  I think I have most of this pulled together from the plane ride.  Not totally sure though.  So I think I am going to have to compile and run and try to figure out what I have in place....
+
+So, it looks like I have nearly everything coded.  The only thing left that I can see is to create a reference to the About dialog and add it into the connect() function call.
+
+So, as I am trying to pull this last connection together, I am struck thinking about how I really need to pull this together.  I think I want my Controllers to be responsible for creating the View and Models for which is coordinates.  At the same time, the main window controller will build and maintain the controllers for each element it will communicate with.
+
+This means I have some restructuring to do of the build system and of the code.
+
+So, let's start with the main window.  The main window has a View and a Controller, but there is no need for a Model since there is no data to manage/manipulate.  However, this Controller also need to be responsible for creating all the other Controllers that will be used.
+
+Now for file organization...  I think I want to split the files into `model`, `view`, `ctlr` folders for both the `src` and `inc` folders.  This will leave a few specific files in the root, which can be moved into a `util` folder.  Then the `#include`s will be folder specific.  Now, this leaves a problem with the sources and the resulting `Makefile` recipes....  This part may be a bit of a mess.
+
+Now that I have the system organized and the code building again (at least to the same point it was before I started making changes), I need to make sure I build out the main window controller.
+
+---
+
+**2018-08-09**
+
+I started working on the main window controller today.  And then I realized that I will actually need a model for the main application.  The reason for this is that the main window controller will open the database connection and close it on exit.  This follows the Model implementation.
+
+At the same time as I work on the above, I am also working on renames again since I am not pleased with the current source file naming (which has not been committed, so you will not see it).
+
+OK, as I have been able to compile this again, I am moving back away from the folders.  The problem for me was that `make` was not able to properly keep track of what really needed to be built, so it was forcing full builds with every compile.  I have enough going on that it takes a while to compile so reducing the number of files to rebuild was a relevant time saver.  I really wish I could get `tup` working on Cloud9.
+
+---
+
+OK, I was able to figure out how to get `tup` running, so I will be refactoring the `Makefile` to use tup to execute the build.  `make` will still be used, but at its heart, `tup` will execute the build.  I expect that this will dramatically improve the build time and accuracy, so there will no need to have the `make clean` and `make force` build targets.  Well....  maybe.
+
+---
+
+**2018-08-10**
+
+Well, I am still struggling with getting `tup` to work.  Actually, `tup` is built, but I cannot get fuse to work.  So, it's back to the `Makefile`.
+
+Running the code, does not launch the window.  So, I have some debugging to do....  Done.
+
+---
+
+**2018-08-11**
+
+OK, so the task for today is to figure out how to connect the main window controller to the about dialog controller so that the menu option causes the about dialog to be displayed.  I will need to look around for some examples, but I'm sure it will involve signals and slots.
+
+This Qt page appears to have all the necessary information I need to implement the menu actions.  I will use that as a template to fill in the necessary functions on the MainWindowController class.
+
+Well, with nearly everything coded and compiling, I am discovering that there are some issues with writing a good connect() function call.  I am getting error messages issued on the screen that I am struggling to resolve properly.
+
+So, with some research, I figured out that I needed to add the Q_OBJECT macro at the top of the class definition.  Then I am getting an undefined vtable for the object I added the macro to...  so this is where the `moc` step comes in...  it will create all the missing virtual methods.  So I have to add this to the build to generate this file.
+
+I have been able to resolve this down to a segmentation fault -- which means a likely null pointer dereference.
+
+---
+
+**2018-08-13**
+
+Today's task was to update everything to use Qt5.  With that, I was able to get the About dialog to display.
+
+---
+
+**2018-08-14**
+
+I was able to get the About dialog to remain modal and stay on top of the application.  This actually gives me a pretty good running application that I am going to commit.  However....  before I do that, do I want to make some effort to combine the header files and create some abstract classes for the View and Controller (since I already have one for Model)?
+
+Well, this is the risk of trying to learn something all on my own and without having something concrete to use as an example.  I have this all wrong and nearly all my code so far needs to be dumped.  I found this: http://doc.qt.io/qt-5/modelview.html.  So, I am going to commit this code now for 2 reasons: 1) so I have something I can refer back to, and 2) so you have something you can look at before I make all these sweeping changes again.  I have no idea what it is going to look like when I get done, but it will not look like what I am about to commit!
+
 

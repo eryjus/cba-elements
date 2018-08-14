@@ -22,17 +22,17 @@
 // -- This is the class definition for a model as part of an MVC design.
 //    ------------------------------------------------------------------
 class Model {
-    // 
+    //
     // -- The database schema and table for this controller -- assumes a 1:1 relationship
     //    -------------------------------------------------------------------------------
     private: std::string SchemaName;
     private: std::string TableName;
-    
+
     // -- ... and the access methods...
     public: std::string GetQualifiedName(void) const { return SchemaName + "." + TableName; }
     public: std::string GetSchemaName(void) const { return SchemaName; }
     public: std::string GetTableName(void) const { return TableName; }
-    
+
     //
     // -- Constructor for the Model
     //    -------------------------
@@ -40,38 +40,38 @@ class Model {
         SetConnection("", "", s, "", "");
         ConnectDatabase();
     }
-    
+
     //
     // -- Clear out the record and prepare it for new data
     //    ------------------------------------------------
     public: virtual void ClearCurrentRecord(void) = 0;
-    
+
     //
     // -- Check if the table exists
     //    -------------------------
     public: virtual bool CheckTableExists(void) = 0;
-    
+
     //
     // -- Create the table if it does not exist
     //    -------------------------------------
     public: virtual void CreateTable(void) = 0;
-    
+
     //
     // -- Insert Record
     //    -------------
     public: virtual bool InsertRecord(void) = 0;
-    
+
     //
     // -- Update Record
     //    -------------
 //    public: virtual bool UpdateRecord(void) = 0;
-    
+
     //
     // -- Delete Record
     //    -------------
 //    public: virtual bool DeleteRecord(void) = 0;
 
-    // 
+    //
     // -- the functions to get the audit info from mysql
     //    ----------------------------------------------
     const std::string GetNow(void) { return "now()"; }

@@ -1,6 +1,6 @@
 //===================================================================================================================
 //
-// view-mainwindow.h -- This is the main window portion of the View components if the MVC design model
+// view/main-win-view.h -- This is the main window portion of the View components if the MVC design model
 //
 // We use Qt4 for this implementation.
 //
@@ -13,25 +13,41 @@
 //===================================================================================================================
 
 
-#ifndef __VIEW_MAINWINDOW_H__
-#define __VIEW_MAINWINDOW_H__
+#ifndef __MAIN_WIN_VIEW_H__
+#define __MAIN_WIN_VIEW_H__
 
 
+class MainWindowController;
+
+
+//
+// -- Application includes; framework includes
+//    ----------------------------------------
 #include <QMainWindow>
 
 
 //
 // -- This is the main window class of the `cba-elements` applicaiton
 //    ---------------------------------------------------------------
-class MainWindow : public QMainWindow {
+class MainWindowView : public QMainWindow {
+    //
     // -- This is the static Factory() method
-    public: static MainWindow *Factory(void);
+    //    -----------------------------------
+    public: static MainWindowView *Factory(MainWindowController *ctl);
 
+
+    //
     // -- The constructor is protected to precent independent instantiation
-    protected: MainWindow() : QMainWindow() {};
+    //    -----------------------------------------------------------------
+    protected: MainWindowView() : QMainWindow() {};
 
+    public: virtual ~MainWindowView() {};
+
+
+    //
     // -- Create the menus for the application
-    private: void CreateMenus(void);
+    //    ------------------------------------
+    private: void CreateMenus(MainWindowController *ctl);
 };
 
 

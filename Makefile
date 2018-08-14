@@ -14,11 +14,18 @@
 ##
 ## -- Some defines to make the compilaton easier
 ##    ------------------------------------------
-FILES=db model-elements main logger view-mainwindow
+MODEL=elements main-win-model
+VIEW=about-view main-win-view
+CTLR=about-controller main-win-controller
+UTIL=db logger
+
+FILES=$(sort $(MODEL) $(VIEW) $(CTLR) $(UTIL))
 SRC=$(addsuffix .cc,$(addprefix src/,$(FILES)))
 OBJ=$(addsuffix .o,$(addprefix obj/,$(FILES)))
 INC=inc/*.h
 TGT=bin/cba-elements
+
+INCLUDES=-I inc -I /usr/include/qt5 -I /usr/include/qt5/QtCore -I /usr/include/qt5/QtWidgets
 
 
 ##
@@ -26,28 +33,22 @@ TGT=bin/cba-elements
 ##    ---------------------------------------
 .PHONY: all
 all: $(TGT)
+#	tup
 
 
 $(TGT): $(OBJ)
-	g++ -o $@ $(OBJ) -lmysqlcppconn -lQtGui -lQtCore
+	g++ -o $@ $(OBJ) -lmysqlcppconn -lQt5Widgets -lQt5Core
 
 
 obj/%.o: src/%.cc Makefile $(INC)
-	g++ -std=c++11 -I inc -I /usr/include/qt4/QtGui -I /usr/include/qt4 -fPIC -c -o $@ $<
+	g++ -std=c++11 $(INCLUDES) -fPIC -c -o $@ $<
 
-##
-## -- The recipe to clean up the mess
-##    -------------------------------
-.PHONY: clean
-clean:
-	rm -f bin/*
-	rm -f obj/*
 
-##
-## -- Force a rebuild of the entire project
-##    -------------------------------------
-.PHONY: force
-force: clean all
+src/%.moc: inc/%.h Makefile
+	moc -qt=5 $(INCLUDES) $< -o $@
+
+
+obj/main-win-controller.o: src/main-win-controller.moc
 
 
 ##
@@ -56,3 +57,13 @@ force: clean all
 .PHONY: run
 run: all
 	$(TGT)
+
+
+.PHONY: clean
+clean:
+	rm -fR obj/*
+	rm -fR bin/*
+	rm -f src/*.moc
+
+.PHONY: force
+force: clean all
